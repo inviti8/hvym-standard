@@ -208,7 +208,8 @@ g["extensions"]["KHR_interactivity"] = {"graphs": [{
     "declarations": [
         {"op": "event/onSelect", "extension": "KHR_node_selectability",
          "outputValueSockets": {"selectedNode": {"type": 2}, "controllerIndex": {"type": 1},
-                                "selectionPoint": {"type": 3}, "selectionRayOrigin": {"type": 3}}},
+                                "selectionPoint": {"type": 3}, "selectionRayOrigin": {"type": 3},
+                                "event": {"type": 2}}},  # all five, or viewers treat it as a no-op
         {"op": "hvym/property/onChange", "extension": "HVYM_asset",
          "outputValueSockets": {"value": {"type": 0}}},
         {"op": "animation/start"},
@@ -218,7 +219,7 @@ g["extensions"]["KHR_interactivity"] = {"graphs": [{
          "flows": {"out": {"node": 2}}},
         {"declaration": 1, "configuration": {"property": {"value": [xp]}}, "flows": {"out": {"node": 2}}},
         {"declaration": 2, "values": {
-            "animation": {"type": 1, "value": [wave]},
+            "animation": {"type": 2, "value": [f"/animations/{wave}"]},  # a ref, as a static JSON pointer
             "startTime": start[0],
             "endTime": {"type": 0, "value": [round(duration(wave), 4)]},
             "speed": {"type": 0, "value": [1]}}},

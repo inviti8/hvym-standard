@@ -1,0 +1,13 @@
+{
+  "name": "hvym-babylon-check",
+  "private": true,
+  "description": "Plays HVYM assets in Babylon.js, a KHR_interactivity implementation, to check graphs work outside our own tools.",
+  "type": "module",
+  "scripts": {
+    "check": "node check.mjs ../../examples/lantern-bot/lantern-bot.glb --click ChestButton --moves Arm"
+  },
+  "dependencies": {
+    "@babylonjs/core": "9.31.0",
+    "@babylonjs/loaders": "9.31.0"
+  }
+}

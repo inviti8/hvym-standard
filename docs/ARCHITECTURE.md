@@ -121,7 +121,7 @@ A web component anyone can put on a page:
   merged September 2026), plus KHR_materials_variants, node visibility, selectability and
   hoverability. Graphs work without us writing a graph interpreter. three.js has no official
   KHR_interactivity support. That's why the original runtime's three.js base doesn't carry over.
-  This is a decision to confirm ([PLAN.md](PLAN.md)).
+  Decided 2026-10-18.
 
 ### 8. Games
 
@@ -179,8 +179,6 @@ A web component anyone can put on a page:
 ## What's not decided yet
 
 These are in [PLAN.md](PLAN.md)'s open decisions:
-- the player engine;
-- whether plain transfers are allowed in every collection;
-- how delegates are added and removed;
-- the co-op's share of sales, if any;
+- how delegates are scoped, and how buyers gain access to properties;
+- per-property and per-option scarcity limits;
 - whether to use one contract per collection or one shared contract.

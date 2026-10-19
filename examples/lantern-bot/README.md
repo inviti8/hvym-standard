@@ -35,7 +35,7 @@ Behaviour is a KHR_interactivity graph:
   and a flat mouth: its defaults. A viewer without `KHR_node_visibility` also shows the hidden top
   hat.
 - **The Babylon.js sandbox** (sandbox.babylonjs.com) supports KHR_interactivity. Drop
-  `lantern-bot.glb` in and click the chest button: the right arm should wave. This is untested so
-  far; see `docs/PLAN.md`, phase 1.
+  `lantern-bot.glb` in and click the round chest button: the right arm waves.
+  `tools/babylon/check.mjs` checks the same thing headlessly, in CI.
 - **Render a state:**
   `blender -b --factory-startup --python tools/blender/preview.py -- examples/lantern-bot/lantern-bot.gltf out.png '{"hat": 1, "paint": 1, "mood": 1}'`

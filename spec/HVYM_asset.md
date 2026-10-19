@@ -351,7 +351,7 @@ Graphs have no string type, so properties are referenced by index here.
 | `hvym/property/onChange` | out flow `out`; out value `value: float` | An event. Fires once when the copy's values are known, then after every change. |
 
 ```json
-"types": [ { "signature": "float" }, { "signature": "int" } ],
+"types": [ { "signature": "float" }, { "signature": "ref" } ],
 "declarations": [
   { "op": "hvym/property/onChange", "extension": "HVYM_asset",
     "outputValueSockets": { "value": { "type": 0 } } },
@@ -361,7 +361,7 @@ Graphs have no string type, so properties are referenced by index here.
   { "declaration": 0, "configuration": { "property": { "value": [3] } },
     "flows": { "out": { "node": 1 } } },
   { "declaration": 1, "values": {
-      "animation": { "type": 1, "value": [0] },
+      "animation": { "type": 1, "value": ["/animations/0"] },
       "startTime": { "type": 0, "value": [0] },
       "endTime": { "type": 0, "value": [1] },
       "speed": { "type": 0, "value": [1] } } }

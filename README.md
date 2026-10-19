@@ -33,6 +33,12 @@ python tools/validate.py examples/lantern-bot/lantern-bot.glb
 python -m unittest discover -s tests
 ```
 
+To play it in Babylon.js, headlessly, and check that the chest button waves the arm (Node 22):
+
+```sh
+cd tools/babylon && npm install && npm run check
+```
+
 To rebuild the example and render it with a state applied (Blender 4.2 or later):
 
 ```sh

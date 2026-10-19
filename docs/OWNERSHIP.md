@@ -61,7 +61,6 @@ Built on OpenZeppelin `stellar-tokens` (soroban-sdk 26 or newer):
 | `pay_token` | The USDC Stellar Asset Contract address. |
 | `choice_prices` | Optional surcharges for particular `mint` choices, such as 5 USDC for the blue paint. |
 | `royalty_bps` | The royalty on resales, in basis points. |
-| `coop` | Optional: a co-op address and its share in basis points. |
 
 ### The rule table
 
@@ -103,7 +102,7 @@ in rule-table order. One entry means one read per render and one TTL to manage.
 
 | Function | Who | What |
 |---|---|---|
-| `buy(buyer, choices)` | anyone | Pays `price` plus the chosen surcharges, in USDC, to the creator (minus the co-op share). Mints the next copy to `buyer`, with `mint` values from `choices` (checked against the range and options) or the defaults, and `live` values at their defaults. Refused after `supply`. |
+| `buy(buyer, choices)` | anyone | Pays `price` plus the chosen surcharges, in USDC, to the creator. Mints the next copy to `buyer`, with `mint` values from `choices` (checked against the range and options) or the defaults, and `live` values at their defaults. Refused after `supply`. |
 | `values(token_id)` | read | The copy's values. |
 | `change(caller, token_id, index, op, arg)` | owner, creator or delegate | `op` is `Set(value)`, `Add(delta)` or `Sub(delta)`. It checks that the property is `live`, that `caller` is allowed by `by` and has authorised the call, that the op matches `change`, that `amount` is matched if it's set, and that the result is within range. The value is never clamped: an out-of-range result is refused. |
 | `change_signed(payload, signature)` | anyone submits | The same change, authorised by an off-chain signature of the owner or a delegate. Games and apps can then relay changes and pay the fee. |
@@ -156,9 +155,8 @@ With this, a game server can award experience without its players holding XLM.
 | `create(creator, template, name, symbol, rules, supply, price, choice_prices, royalty_bps)` | The creator authorises the call. It deploys a collection contract (salt = hash(template, creator)), records it, and emits `("collection", creator)`. |
 | `collections(creator)`, `collection(template, creator)` | Lookups. The indexer keeps the full list. |
 
-- The factory may be gated on co-op membership and charge a creation fee. `hvym-collective`'s
-  `deploy_ipfs_token` does both, and could do the same here.
-- That's a business decision, recorded in [PLAN.md](PLAN.md).
+The factory is open: anyone can create a collection, with no membership gate and no fee
+(decided 2026-10-18).
 
 ## What the player does with all this
 
@@ -178,9 +176,8 @@ With this, a game server can award experience without its players holding XLM.
   delegate raising `xp` to its maximum, within the rule. Creators should give delegate authority
   only to properties where that's acceptable. An open decision is whether delegates are scoped per
   property.
-- **Plain `transfer` skips royalties.** It's kept so gifts and wallets work. A creator who wants
-  royalties enforced on every move could choose a "sale only" collection. That's an open decision:
-  it breaks some wallets.
+- **Plain `transfer` skips royalties.** It stays allowed in every collection, so gifts and
+  wallets work (decided 2026-10-18). Royalties are paid on the contract's own resale path.
 - **No upgradeability.** Collection contracts aren't upgradeable. A fixed, audited Wasm is part of
   the trust model. The factory can deploy a newer version for new collections.
 - **Before mainnet:** prices in 7-decimal USDC units, i128 arithmetic with overflow checks, and an

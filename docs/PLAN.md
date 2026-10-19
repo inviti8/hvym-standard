@@ -21,10 +21,11 @@ Each phase is useful on its own.
   - Its tests, `tests/test_validate.py`.
   - The example asset `examples/lantern-bot/`, built by `tools/blender/make_example.py`.
   - `tools/blender/preview.py`, which renders an asset with a state applied.
+  - `tools/babylon/check.mjs`, which plays an asset in Babylon.js (headless, NullEngine), prints
+    Babylon's view of each graph, selects a node and checks that another one moves. It runs in CI.
 - **Still to do:**
   - Review the spec with the add-on and player designs in hand, before calling it 0.1.
-  - Try the example in the Babylon.js sandbox and the Khronos Sample Viewer, to confirm that the
-    graph and node visibility behave there.
+  - Try the example in the Khronos Sample Viewer too.
 - **As built:**
   - The example's export is plain Blender 5.1 glTF, plus a post-pass for what the exporter can't
     write: the HVYM extensions, KHR_node_visibility, the unused paint material and the graph.
@@ -32,6 +33,16 @@ Each phase is useful on its own.
     exported the Smile morph at weight 1 while `mood` defaults to 0.
   - Renders of three states (default; top hat, blue paint, full smile, blue lamp; half smile with
     the lamp off) matched what the state asked for.
+  - The chest button first did nothing in the Babylon.js sandbox. There were two mistakes in
+    writing core Khronos operations, and Babylon 9.31 made both visible:
+    - `animation/start` takes a `ref`, written as a static pointer such as `"/animations/1"`, not an
+      int. Babylon rejected the whole graph.
+    - A declaration of another extension's operation must list exactly that operation's sockets.
+      `event/onSelect` has five outputs, including `ref event`. With four, Babylon quietly made it a
+      no-op.
+
+    Both are fixed, and the button waves the arm in Babylon. `hvym/property/onChange` is a no-op in
+    Babylon, as the spec intends for viewers without HVYM.
 
 ### Phase 2: the Blender add-on
 
@@ -94,20 +105,21 @@ Each phase is useful on its own.
 | 2026-10-18 | References are glTF indices; properties and sets are referenced by name in HVYM data and by index in graphs. |
 | 2026-10-18 | Price, supply and owners live in the contract, not the file. |
 | 2026-10-18 | Ownership on Stellar Soroban, SEP-50, built on OpenZeppelin `stellar-tokens`. The format itself stays chain-neutral. |
+| 2026-10-18 | The player is built on Babylon.js, which plays KHR_interactivity today. |
+| 2026-10-18 | Plain SEP-50 transfers stay allowed in every collection. Royalties are paid on the contract's own resale path. |
+| 2026-10-18 | No co-op role: the factory is open, with no membership gate, fee or share of sales. |
 
 ## Open decisions
 
-1. **The player's engine.** Babylon.js is recommended, since it plays KHR_interactivity today. The
-   alternative is three.js plus our own graph interpreter.
-2. **One contract per collection or one shared contract.** Per-collection is recommended
+1. **One contract per collection or one shared contract.** Per-collection is recommended
    ([OWNERSHIP.md](OWNERSHIP.md)).
-3. **Plain transfers.** Always allowed, or a per-collection "sale only" option that enforces
-   royalties but breaks some wallets?
-4. **Delegates.** Collection-wide, or scoped per property? Can the creator remove one at any time?
-5. **The co-op's role.** Gate the factory on membership? Take a share of sales or a creation fee?
-6. **Purchase choices.** Are surcharges per option enough, or do creators want per-property pricing
+2. **Access gated to properties bought, and scarcity.** Proposed, awaiting confirmation:
+   - delegates are scoped to named properties;
+   - properties can be bought after purchase, as unlocks;
+   - options and properties can have supply limits.
+3. **Purchase choices.** Are surcharges per option enough, or do creators want per-property pricing
    rules?
-7. **Text on controls.** How a `text` control renders a string on a mesh: an SDF font on a plane
+4. **Text on controls.** How a `text` control renders a string on a mesh: an SDF font on a plane
    fitted to the mesh, or a texture.
-8. **Audio**, for Polyface lines: our own reference now, mapped to KHR_audio_emitter or
+5. **Audio**, for Polyface lines: our own reference now, mapped to KHR_audio_emitter or
    KHR_audio_graph when one is ratified.

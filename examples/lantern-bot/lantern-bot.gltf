@@ -1509,6 +1509,9 @@
         },
         "selectionRayOrigin": {
          "type": 3
+        },
+        "event": {
+         "type": 2
         }
        }
       },
@@ -1560,9 +1563,9 @@
        "declaration": 2,
        "values": {
         "animation": {
-         "type": 1,
+         "type": 2,
          "value": [
-          1
+          "/animations/1"
          ]
         },
         "startTime": {
