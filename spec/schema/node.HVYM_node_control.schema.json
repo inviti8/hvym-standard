@@ -1,0 +1,27 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "node.HVYM_node_control.schema.json",
+    "title": "HVYM_node_control glTF Node Extension",
+    "type": "object",
+    "description": "Makes a node's mesh a control: a button, toggle, slider, selector or text field.",
+    "properties": {
+        "type": { "type": "string", "enum": [ "button", "toggle", "slider", "selector", "text" ] },
+        "property": { "type": "string", "description": "The property it changes or shows." },
+        "event": { "type": "string", "minLength": 1, "description": "For a button: the custom event id sent when it's pressed." },
+        "handle": { "type": "integer", "minimum": 0, "description": "For a slider: the node that moves." },
+        "axis": { "type": "string", "enum": [ "x", "y", "z" ], "default": "x" },
+        "length": { "type": "number", "exclusiveMinimum": 0, "default": 1 },
+        "wrap": { "type": "boolean", "default": true },
+        "extensions": { },
+        "extras": { }
+    },
+    "required": [ "type" ],
+    "allOf": [
+        { "$ref": "glTFProperty.schema.json" },
+        {
+            "if": { "properties": { "type": { "const": "button" } } },
+            "then": { "required": [ "event" ] },
+            "else": { "required": [ "property" ] }
+        }
+    ]
+}

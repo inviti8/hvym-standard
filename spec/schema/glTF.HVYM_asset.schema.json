@@ -1,0 +1,63 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "glTF.HVYM_asset.schema.json",
+    "title": "HVYM_asset glTF Extension",
+    "type": "object",
+    "description": "Makes a glTF asset programmable: properties with rules, the bindings that let them drive the scene, sets of alternatives and panels.",
+    "allOf": [ { "$ref": "glTFProperty.schema.json" } ],
+    "properties": {
+        "specVersion": {
+            "type": "string",
+            "description": "The version of the HVYM_asset specification this asset follows.",
+            "enum": [ "0.1" ]
+        },
+        "kind": {
+            "type": "string",
+            "description": "What the asset is.",
+            "enum": [ "character", "creature", "weapon", "object", "wearable", "audio", "scene", "other" ],
+            "default": "other"
+        },
+        "title": { "type": "string", "description": "The asset's display name." },
+        "creator": {
+            "type": "object",
+            "description": "Who made the asset. Informational: authorship is proven by the collection contract.",
+            "properties": {
+                "name": { "type": "string" },
+                "address": {
+                    "type": "string",
+                    "description": "A ledger address as <network>:<address>, for example stellar:G...",
+                    "pattern": "^[a-z0-9]+:[A-Za-z0-9]+$"
+                }
+            },
+            "additionalProperties": false
+        },
+        "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "properties": {
+            "type": "array",
+            "description": "The asset's properties.",
+            "items": { "$ref": "HVYM_asset.property.schema.json" },
+            "minItems": 1
+        },
+        "sets": {
+            "type": "array",
+            "description": "Lists of alternatives that a property selects between.",
+            "items": { "$ref": "HVYM_asset.set.schema.json" },
+            "minItems": 1
+        },
+        "bindings": {
+            "type": "array",
+            "description": "How properties drive the scene.",
+            "items": { "$ref": "HVYM_asset.binding.schema.json" },
+            "minItems": 1
+        },
+        "panels": {
+            "type": "array",
+            "description": "How a player presents the properties.",
+            "items": { "$ref": "HVYM_asset.panel.schema.json" },
+            "minItems": 1
+        },
+        "extensions": { },
+        "extras": { }
+    },
+    "required": [ "specVersion", "properties" ]
+}

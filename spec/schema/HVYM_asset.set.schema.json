@@ -1,0 +1,42 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "HVYM_asset.set.schema.json",
+    "title": "HVYM_asset Set",
+    "type": "object",
+    "description": "A list of alternatives, nodes or materials, of which exactly one is active.",
+    "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$" },
+        "type": { "type": "string", "enum": [ "nodes", "materials" ] },
+        "options": {
+            "type": "array",
+            "description": "Node indices for a nodes set, material indices for a materials set.",
+            "items": { "type": "integer", "minimum": 0 },
+            "minItems": 2
+        },
+        "targets": {
+            "type": "array",
+            "description": "For a materials set: the primitives that wear the chosen material.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "mesh": { "type": "integer", "minimum": 0 },
+                    "primitive": { "type": "integer", "minimum": 0 }
+                },
+                "required": [ "mesh", "primitive" ],
+                "additionalProperties": false
+            },
+            "minItems": 1
+        },
+        "extensions": { },
+        "extras": { }
+    },
+    "required": [ "name", "type", "options" ],
+    "allOf": [
+        { "$ref": "glTFProperty.schema.json" },
+        {
+            "if": { "properties": { "type": { "const": "materials" } } },
+            "then": { "required": [ "targets" ] },
+            "else": { "not": { "required": [ "targets" ] } }
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "HVYM_asset.binding.schema.json",
+    "title": "HVYM_asset Binding",
+    "type": "object",
+    "description": "Connects a property to one target: an Object Model pointer, a set or an animation.",
+    "properties": {
+        "property": { "type": "string", "description": "The property's name." },
+        "pointer": {
+            "type": "string",
+            "description": "A glTF Object Model pointer to a mutable property, with concrete indices.",
+            "pattern": "^/(nodes|meshes|materials)/[0-9]+/"
+        },
+        "set": { "type": "string", "description": "A set's name." },
+        "animation": { "type": "integer", "minimum": 0 },
+        "drive": { "type": "string", "enum": [ "play", "weight", "time" ] },
+        "loop": { "type": "string", "enum": [ "once", "repeat", "pingpong", "hold" ], "default": "once" },
+        "map": {
+            "type": "object",
+            "properties": {
+                "from": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+                "to": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                        "oneOf": [
+                            { "type": "number" },
+                            { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 4 }
+                        ]
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
+        "extensions": { },
+        "extras": { }
+    },
+    "required": [ "property" ],
+    "oneOf": [
+        {
+            "required": [ "pointer" ],
+            "not": { "anyOf": [ { "required": [ "set" ] }, { "required": [ "animation" ] }, { "required": [ "drive" ] }, { "required": [ "loop" ] } ] }
+        },
+        {
+            "required": [ "set" ],
+            "not": { "anyOf": [ { "required": [ "pointer" ] }, { "required": [ "animation" ] }, { "required": [ "drive" ] }, { "required": [ "loop" ] }, { "required": [ "map" ] } ] }
+        },
+        {
+            "required": [ "animation", "drive" ],
+            "not": { "anyOf": [ { "required": [ "pointer" ] }, { "required": [ "set" ] } ] }
+        }
+    ],
+    "allOf": [ { "$ref": "glTFProperty.schema.json" } ]
+}

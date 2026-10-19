@@ -1,0 +1,11 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "glTFProperty.schema.json",
+    "title": "glTF Property",
+    "description": "A local stand-in for the glTF 2.0 core schema's base object, so these schemas validate on their own.",
+    "type": "object",
+    "properties": {
+        "extensions": { "type": "object" },
+        "extras": { }
+    }
+}

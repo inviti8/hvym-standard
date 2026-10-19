@@ -1,0 +1,11 @@
+The Heavymeta Standard specification and documentation (the files under spec/ ending in .md,
+and the files under docs/) are copyright (c) 2026 Heavymeta and are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+You may share and adapt them for any purpose, including commercially, provided you give
+appropriate credit, link to the license, and indicate if changes were made.
+
+The full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+The JSON Schemas (spec/schema/), tools, tests and examples are licensed under the MIT License
+in LICENSE.
